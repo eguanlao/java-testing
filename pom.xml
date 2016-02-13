@@ -4,23 +4,31 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.about.eguanlao</groupId>
-    <artifactId>testicles</artifactId>
+    <artifactId>library-testing</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>testicles</name>
+    <name>library-testing</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>4.12</junit.version>
         <cucumber.version>1.2.0</cucumber.version>
+        <jasminemaven.version>2.0</jasminemaven.version>
+        <jetty.version>9.3.2.v20150730</jetty.version>
+        <failsafe.version>2.18.1</failsafe.version>
+        <phantomjs.binary></phantomjs.binary>
+        <phantomjsdriver.version>1.1.0</phantomjsdriver.version>
+        <phantomjs.version>1.9.7</phantomjs.version>
+        <phantomjs.plugin.version>0.7</phantomjs.plugin.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -35,6 +43,32 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.detro.ghostdriver</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>${phantomjsdriver.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+            <version>1.0.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+            <version>3.0.6.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -47,6 +81,127 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.searls</groupId>
+                <artifactId>jasmine-maven-plugin</artifactId>
+                <version>${jasminemaven.version}</version>
+                <configuration>
+                    <jsSrcDir>src/main/webapp/js</jsSrcDir>
+                    <preloadSources>
+                        <source>lib/jquery/jquery.js</source>
+                        <source>lib/jasmine-jquery/jasmine-jquery.js</source>
+                    </preloadSources>
+                    <sourceExcludes>
+                        <exclude>lib/**/*</exclude>
+                    </sourceExcludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.klieber</groupId>
+                <artifactId>phantomjs-maven-plugin</artifactId>
+                <version>0.7</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <version>1.9.7</version>
+                </configuration>
+            </plugin>
+
+            <!-- Get two free ports for our test server to use -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <portNames>
+                        <portName>jetty.port</portName>
+                        <portName>jetty.port.stop</portName>
+                    </portNames>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>reserve-port</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Use failsafe to run our integration tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${failsafe.version}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <phantomjs.binary>${phantomjs.binary}</phantomjs.binary>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Use a Jetty test server to serve our test content -->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.3.0.M2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-servlet</artifactId>
+                        <version>${jetty.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <jvmArgs>-Djetty.port=${jetty.port}</jvmArgs>
+                    <stopKey>ANY_KEY_HERE_IS_FINE</stopKey>
+                    <stopPort>${jetty.port.stop}</stopPort>
+                    <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

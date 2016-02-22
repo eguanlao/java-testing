@@ -22,7 +22,8 @@
     "compileOnSave": true,
     "buildOnSave": false,
     "files": [
-        "greeter.ts"
+        "greeter.ts",
+        "mixins.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

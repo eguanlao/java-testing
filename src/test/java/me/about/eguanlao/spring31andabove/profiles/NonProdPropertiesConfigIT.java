@@ -1,4 +1,4 @@
-package me.about.eguanlao.spring31andabove;
+package me.about.eguanlao.spring31andabove.profiles;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +13,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class ProdPropertiesConfigIT {
+public class NonProdPropertiesConfigIT {
 
     static {
-        System.setProperty("spring.profiles.active", "prod");
+        System.setProperty("spring.profiles.active", "nonprod");
     }
 
     @Configuration
@@ -41,7 +41,7 @@ public class ProdPropertiesConfigIT {
 
     @Test
     public void should_set_foo() {
-        assertThat(foo, is("prod"));
+        assertThat(foo, is("nonprod"));
     }
 
     @Test

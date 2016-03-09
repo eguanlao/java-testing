@@ -18,7 +18,6 @@ public class PropertiesConfig {
     @PropertySource({
             "application-default.properties",
             "globalmessages.properties",
-            "missing.properties",
             "validationmessages.properties"
     })
     static class DefaultConfig {
@@ -31,7 +30,6 @@ public class PropertiesConfig {
             "application-default.properties",
             "application-nonprod.properties",
             "globalmessages.properties",
-            "missing.properties",
             "validationmessages.properties"
     })
     static class NonProdConfig {
@@ -43,7 +41,6 @@ public class PropertiesConfig {
             "application-default.properties",
             "application-prod.properties",
             "globalmessages.properties",
-            "missing.properties",
             "validationmessages.properties"
     })
     static class ProdConfig {

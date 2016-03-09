@@ -20,7 +20,7 @@ public class DefaultPropertiesConfigIT {
     }
 
     @Configuration
-    @ComponentScan("me.about.eguanlao.spring31andabove")
+    @ComponentScan("me.about.eguanlao.spring31andabove.profiles")
     static class Config {
     }
 

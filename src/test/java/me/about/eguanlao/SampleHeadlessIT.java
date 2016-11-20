@@ -19,51 +19,51 @@ import static org.junit.Assert.fail;
 
 public class SampleHeadlessIT {
 
-    private WebDriver webDriver;
-    private String baseUrl;
-    private StringBuilder verificationErrors = new StringBuilder();
-    protected static DesiredCapabilities desiredCapabilities;
+  private WebDriver webDriver;
+  private String baseUrl;
+  private StringBuilder verificationErrors = new StringBuilder();
+  protected static DesiredCapabilities desiredCapabilities;
 
-    @Before
-    public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
 
-        desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setJavascriptEnabled(true);
-        desiredCapabilities.setCapability("takesScreenshot", false);
-        desiredCapabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, System.getProperty("phantomjs.binary"));
+    desiredCapabilities = new DesiredCapabilities();
+    desiredCapabilities.setJavascriptEnabled(true);
+    desiredCapabilities.setCapability("takesScreenshot", false);
+    desiredCapabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, System.getProperty("phantomjs.binary"));
 
-        webDriver = new PhantomJSDriver(desiredCapabilities);
-        baseUrl = "http://localhost:" + System.getProperty("http.port");
-        System.out.println("********************");
-        System.out.println("********************");
-        System.out.println("********************");
-        System.out.println("********************");
-        System.out.println("********************");
-        System.out.println("********************");
-        System.out.println("baseUrl: " + baseUrl);
-        System.out.println("********************");
-        System.out.println("********************");
-        System.out.println("********************");
-        System.out.println("********************");
-        webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    webDriver = new PhantomJSDriver(desiredCapabilities);
+    baseUrl = "http://localhost:" + System.getProperty("http.port");
+    System.out.println("********************");
+    System.out.println("********************");
+    System.out.println("********************");
+    System.out.println("********************");
+    System.out.println("********************");
+    System.out.println("********************");
+    System.out.println("baseUrl: " + baseUrl);
+    System.out.println("********************");
+    System.out.println("********************");
+    System.out.println("********************");
+    System.out.println("********************");
+    webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    webDriver.quit();
+    String verificationErrorString = verificationErrors.toString();
+    if (!"".equals(verificationErrorString)) {
+      fail(verificationErrorString);
     }
+  }
 
-    @After
-    public void tearDown() throws Exception {
-        webDriver.quit();
-        String verificationErrorString = verificationErrors.toString();
-        if (!"".equals(verificationErrorString)) {
-            fail(verificationErrorString);
-        }
-    }
+  @Test
+  public void should_find_the_h1_tags() throws Exception {
+    webDriver.get(baseUrl + "/index.html");
 
-    @Test
-    public void should_find_the_h1_tags() throws Exception {
-        webDriver.get(baseUrl + "/index.html");
+    List<WebElement> h1Tags = webDriver.findElements(By.tagName("h1"));
 
-        List<WebElement> h1Tags = webDriver.findElements(By.tagName("h1"));
-
-        assertThat(h1Tags.size(), is(1));
-    }
+    assertThat(h1Tags.size(), is(1));
+  }
 
 }

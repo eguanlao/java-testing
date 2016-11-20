@@ -18,26 +18,26 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration
 public class SimpleProductServiceIT {
 
-    @Configuration
-    @ComponentScan("me.about.eguanlao.spring31andabove.staticclass")
-    static class Config {
-    }
+  @Configuration
+  @ComponentScan("me.about.eguanlao.spring31andabove.staticclass")
+  static class Config {
+  }
 
-    @Autowired
-    private ProductService productService;
+  @Autowired
+  private ProductService productService;
 
-    @Test
-    public void should_have_a_null_value_for_foo() throws IllegalAccessException {
-        final String foo = (String) readStaticField(SimpleProductService.class, "foo", true);
+  @Test
+  public void should_have_a_null_value_for_foo() throws IllegalAccessException {
+    final String foo = (String) readStaticField(SimpleProductService.class, "foo", true);
 
-        assertThat(foo, is(nullValue()));
-    }
+    assertThat(foo, is(nullValue()));
+  }
 
-    @Test
-    public void should_have_a_non_null_value_for_bar() throws IllegalAccessException {
-        final String bar = (String) readField(productService, "bar", true);
+  @Test
+  public void should_have_a_non_null_value_for_bar() throws IllegalAccessException {
+    final String bar = (String) readField(productService, "bar", true);
 
-        assertThat(bar, is("default"));
-    }
+    assertThat(bar, is("default"));
+  }
 
 }

@@ -15,53 +15,53 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @ContextConfiguration
 public class NonProdPropertiesConfigIT {
 
-    static {
-        System.setProperty("spring.profiles.active", "nonprod");
-    }
+  static {
+    System.setProperty("spring.profiles.active", "nonprod");
+  }
 
-    @Configuration
-    @ComponentScan("me.about.eguanlao.spring31andabove.profiles")
-    static class Config {
-    }
+  @Configuration
+  @ComponentScan("me.about.eguanlao.spring31andabove.profiles")
+  static class Config {
+  }
 
-    @Value("${foo}")
-    private String foo;
+  @Value("${foo}")
+  private String foo;
 
-    @Value("${bar}")
-    private String bar;
+  @Value("${bar}")
+  private String bar;
 
-    @Value("${baz}")
-    private String baz;
+  @Value("${baz}")
+  private String baz;
 
-    @Value("${greeting}")
-    private String greeting;
+  @Value("${greeting}")
+  private String greeting;
 
-    @Value("${invalid.username}")
-    private String invalidUsername;
+  @Value("${invalid.username}")
+  private String invalidUsername;
 
-    @Test
-    public void should_set_foo() {
-        assertThat(foo, is("nonprod"));
-    }
+  @Test
+  public void should_set_foo() {
+    assertThat(foo, is("nonprod"));
+  }
 
-    @Test
-    public void should_set_bar() {
-        assertThat(bar, is("default"));
-    }
+  @Test
+  public void should_set_bar() {
+    assertThat(bar, is("default"));
+  }
 
-    @Test
-    public void should_set_baz() {
-        assertThat(baz, is("default"));
-    }
+  @Test
+  public void should_set_baz() {
+    assertThat(baz, is("default"));
+  }
 
-    @Test
-    public void should_set_greeting() {
-        assertThat(greeting, is("Hello, world!"));
-    }
+  @Test
+  public void should_set_greeting() {
+    assertThat(greeting, is("Hello, world!"));
+  }
 
-    @Test
-    public void should_set_invalid_username() {
-        assertThat(invalidUsername, is("Invalid username"));
-    }
+  @Test
+  public void should_set_invalid_username() {
+    assertThat(invalidUsername, is("Invalid username"));
+  }
 
 }

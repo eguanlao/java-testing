@@ -48,6 +48,12 @@
             <artifactId>phantomjsdriver</artifactId>
             <version>${phantomjsdriver.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -92,6 +98,12 @@
             <version>${jetty.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.0.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -120,29 +132,6 @@
                 <configuration>
                     <version>1.9.7</version>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.github.searls</groupId>
-                <artifactId>jasmine-maven-plugin</artifactId>
-                <version>${jasminemaven.version}</version>
-                <configuration>
-                    <jsSrcDir>src/main/webapp/js</jsSrcDir>
-                    <preloadSources>
-                        <source>lib/jquery/jquery.js</source>
-                        <source>lib/jasmine-jquery/jasmine-jquery.js</source>
-                    </preloadSources>
-                    <sourceExcludes>
-                        <exclude>lib/**/*</exclude>
-                    </sourceExcludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

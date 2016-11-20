@@ -1,0 +1,41 @@
+package me.about.eguanlao.immutability;
+
+import com.google.common.collect.Lists;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class ImmutableListSupplierTest {
+
+  private Supplier<List<String>> supplier1;
+
+  private Supplier<List<String>> supplier2;
+
+  @Before
+  public void setUp() {
+    final List<String> strings = Lists.newArrayList("foo", "bar");
+    supplier1 = new ImmutableListSupplier(strings);
+    supplier2 = new ImmutableListSupplier(strings);
+  }
+
+  @Test
+  public void should_have_the_expected_initial_size() {
+    assertThat(supplier1.get()).hasSize(2);
+    assertThat(supplier2.get()).hasSize(2);
+  }
+
+  @Test
+  public void should_increase_the_size_of_the_list() {
+    supplier1.get().add("baz");
+    supplier2.get().add("qux");
+
+    assertThat(supplier1.get()).hasSize(2).contains("foo", "bar");
+    assertThat(supplier2.get()).hasSize(2).contains("foo", "bar");
+  }
+
+}

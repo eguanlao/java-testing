@@ -17,54 +17,54 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration
 public class CollectionsIT {
 
-    @Configuration
-    static class Config {
+  @Configuration
+  static class Config {
 
-        @Bean
-        public SearchService keywordSearchService() {
-            return new KeywordSearchService();
-        }
-
-        @Bean
-        public SearchService categorySearchService() {
-            return new CategorySearchService();
-        }
-
-        @Bean
-        public SearchService locationSearchService() {
-            return new LocationSearchService();
-        }
-
+    @Bean
+    public SearchService keywordSearchService() {
+      return new KeywordSearchService();
     }
 
-    @Autowired
-    private Collection<SearchService> searchServices;
-
-    @Autowired
-    private Set<SearchService> searchServiceSet;
-
-    @Autowired
-    private SearchService[] searchServiceArray;
-
-    @Test
-    public void should_have_a_collection_of_all_SearchService_implementations() {
-        assertThat(searchServices)
-                .isNotEmpty()
-                .hasSize(3);
+    @Bean
+    public SearchService categorySearchService() {
+      return new CategorySearchService();
     }
 
-    @Test
-    public void should_have_a_set_of_all_SearchService_implementations() {
-        assertThat(searchServiceSet)
-                .isNotEmpty()
-                .hasSize(3);
+    @Bean
+    public SearchService locationSearchService() {
+      return new LocationSearchService();
     }
 
-    @Test
-    public void should_have_an_array_of_all_SearchService_implementations() {
-        assertThat(searchServiceArray)
-                .isNotEmpty()
-                .hasSize(3);
-    }
+  }
+
+  @Autowired
+  private Collection<SearchService> searchServices;
+
+  @Autowired
+  private Set<SearchService> searchServiceSet;
+
+  @Autowired
+  private SearchService[] searchServiceArray;
+
+  @Test
+  public void should_have_a_collection_of_all_SearchService_implementations() {
+    assertThat(searchServices)
+        .isNotEmpty()
+        .hasSize(3);
+  }
+
+  @Test
+  public void should_have_a_set_of_all_SearchService_implementations() {
+    assertThat(searchServiceSet)
+        .isNotEmpty()
+        .hasSize(3);
+  }
+
+  @Test
+  public void should_have_an_array_of_all_SearchService_implementations() {
+    assertThat(searchServiceArray)
+        .isNotEmpty()
+        .hasSize(3);
+  }
 
 }
